@@ -1,29 +1,41 @@
 import {createStore} from 'redux'
 
-const redux = require ('redux')
+const initialState = {counter: 0, showCounter: true}
 
-const counterReducer = (state = { counter:0}, action ) =>{
+const counterReducer = (state = initialState, action ) =>{
     // indentifier - increment 
     if (action.type === "increment"){
         return {
-            counter:state.counter +1
+            counter:state.counter +1,
+            showCounter: state.showCounter
         }
     }
     if (action.type === "increase"){
         return {
-            counter:state.counter + action.amount
+            counter:state.counter + action.amount, 
+            // keep the existing counter it doesn't care about showCounter Redux will now merge that by default 
+            showCounter: state.showCounter
         }
     }
     if (action.type === "decrement"){
         return {
-            counter:state.counter -1
+            counter:state.counter -1,
+            showCounter: state.showCounter
+        }
+    }
+    // to add new pieace of data to show or hide the counter 
+    if(action.type === 'toggle'){
+        return {
+            showCounter: !state.showCounter, 
+            counter: state.counter
         }
     }
     // unless we can see unchanged state
     return state
 }
 
-const store = redux.createStore(counterReducer)
+    
+const store = createStore(counterReducer)
 
 // since we have one redux store we only need to provide only once
 export default store
